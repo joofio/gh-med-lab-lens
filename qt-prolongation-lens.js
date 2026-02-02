@@ -1,5 +1,6 @@
 let htmlData = html;
 let ipsData = ips;
+let lang = "";  // Default language, will be set by ePI
 
 let getSpecification = () => {
     return "1.0.0";
@@ -60,6 +61,28 @@ let enhance = async () => {
     if (!ipsData || !ipsData.entry || ipsData.entry.length === 0) {
         throw new Error("IPS is empty or invalid.");
     }
+
+    // 1. Check Composition.language
+    epi?.entry?.forEach((entry) => {
+        const res = entry.resource;
+        if (res?.resourceType === "Composition" && res.language) {
+            lang = res.language;
+            console.log("🌍 Detected from Composition.language:", lang);
+        }
+    });
+
+    // 2. If not found, check Bundle.language
+    if (!lang && epi?.language) {
+        lang = epi.language;
+        console.log("🌍 Detected from Bundle.language:", lang);
+    }
+
+    // 3. Fallback
+    if (!lang) {
+        console.warn("⚠️ No language detected in Composition or Bundle.");
+        lang = "en";
+    }
+
     let enhanceTag = "highlight";
     let listOfCategoriesToSearch = [{ "code": "grav-1", "system": "http://gravitate-health.eu/codes" }]; //what to look in extensions -made up code because there is none
 
@@ -185,7 +208,7 @@ let enhance = async () => {
 };
 
 
-function getReport(lang) {
+function getReport(lang = "en") {
     console.log("Generating report in language:", lang);
     return { message: getExplanation(lang), status: "" };
 
@@ -193,7 +216,7 @@ function getReport(lang) {
 }
 
 // --- Get user-facing report sentence in the selected language ---
-function getExplanation(lang) {
+function getExplanation(lang = "en") {
     console.log("Generating explanation in language:", lang);
     return "";
 }
@@ -202,6 +225,6 @@ function getExplanation(lang) {
 return {
     enhance: enhance,
     getSpecification: getSpecification,
-    explanation: (language) => getExplanation(language || lang),
-    report: (language) => getReport(language || lang),
+    explanation: (language) => getExplanation(language || lang || "en"),
+    report: (language) => getReport(language || lang || "en"),
 };
