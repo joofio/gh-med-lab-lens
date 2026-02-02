@@ -1,5 +1,7 @@
 # Encode JS to base64 and update JSON
+
 ./scripts/update-lens-json.sh
 
 # Run tests
+
 npm test
