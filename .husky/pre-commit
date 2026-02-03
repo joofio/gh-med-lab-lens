@@ -1,7 +1,11 @@
 # Encode JS to base64 and update JSON
 
-lens-tool-bundler bundle qt-prolongation-lens.js -u
+lens-tool-bundler batch-bundle --exclude data -f
 
 # Run tests
 
 npm test
+
+# re-add modified files
+
+git add -A
