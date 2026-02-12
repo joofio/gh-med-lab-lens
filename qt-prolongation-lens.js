@@ -217,8 +217,13 @@ function getReport(lang = "en") {
 
 // --- Get user-facing report sentence in the selected language ---
 function getExplanation(lang = "en") {
-    console.log("Generating explanation in language:", lang);
-    return "";
+    const explanations = {
+        en: "This lens highlights the risk of QT prolongation based on medication and lab results.",
+        pt: "Esta lente destaca o risco de prolongamento do intervalo QT com base na medicação e nos resultados laboratoriais.",
+        es: "Esta lente resalta el riesgo de prolongación del QT basado en la medicación y los resultados de laboratorio.",
+        da: "Denne linse fremhæver risikoen for QT-forlængelse baseret på medicin og laboratorieresultater.",
+    };
+    return explanations[lang] || explanations.en;
 }
 
 // --- Exported API ---

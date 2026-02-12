@@ -13,8 +13,7 @@
   },
   "scripts": {
     "test": "jest",
-    "prepare": "husky",
-    "update-json": "./scripts/update-lens-json.sh"
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
